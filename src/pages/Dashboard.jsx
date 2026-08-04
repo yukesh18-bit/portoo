@@ -3,7 +3,7 @@ import GlassCard from "../components/GlassCard";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   FaHome,
@@ -25,15 +25,23 @@ import {
 
 export default function Dashboard() {
 
- const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const { user } = useContext(UserContext);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
 
 return (
     <GradientBackground>
-      <div className="min-h-screen flex">
+<div className="min-h-screen flex flex-col lg:flex-row">
 
         {/* ================= Sidebar ================= */}
 
-        <aside className="w-72 p-6">
+<aside className="w-full lg:w-72 p-4 lg:p-6">
 
           <GlassCard>
 
@@ -52,7 +60,7 @@ return (
                 <MenuItem
                  icon={<FaHome />}
                   text="Dashboard"
-                   to="/"
+                   to="/dashboard"
                  active
                 />
 
@@ -81,9 +89,10 @@ return (
                             />
 
                 <MenuItem
-                  icon={<FaCog />}
-                  text="Settings"
-                />
+  icon={<FaCog />}
+  text="Settings"
+  to="/settings"
+/>
                 <MenuItem
   icon={<FaFileAlt />}
   text="Resume"
@@ -100,6 +109,7 @@ return (
 
               <button
                 className="mt-12 w-full rounded-xl border border-red-500/30 bg-red-500/20 py-3 text-red-300 transition hover:bg-red-500/30"
+                onClick={handleLogout}
               >
                 <FaSignOutAlt className="mr-2 inline" />
                 Logout
@@ -113,20 +123,18 @@ return (
 
         {/* ================= Main ================= */}
 
-        <main className="flex-1 p-8">
-
+         <main className="flex-1 p-4 md:p-6 lg:p-8">
           {/* Header */}
 
-          <div className="flex items-center justify-between">
-
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
 
               <p className="uppercase tracking-[4px] text-violet-400">
                 Dashboard
               </p>
 
-              <h1 className="mt-2 text-5xl font-black text-white">
-               Good Evening, {user.name || "Student"}
+<h1 className="mt-2 text-3xl md:text-4xl lg:text-5xl font-black text-white">           
+      Good Evening, {user.name || "Student"}
               </h1>
 
               <p className="mt-3 text-gray-400">

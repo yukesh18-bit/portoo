@@ -5,7 +5,6 @@ import GlassCard from "../components/GlassCard";
 import { UserContext } from "../Context/UserContext";
 
 export default function Projects() {
-
 const context = useContext(UserContext);
 
 console.log("Context:", context);
@@ -15,7 +14,8 @@ const { user, setUser } = context || {};
 
   const [projectName, setProjectName] = useState("");
   const [techStack, setTechStack] = useState("");
-
+  const [description, setDescription] = useState("");
+const [github, setGithub] = useState("");
   return (
     <GradientBackground>
       <div className="min-h-screen p-8">
@@ -88,6 +88,19 @@ const { user, setUser } = context || {};
           onChange={(e) => setTechStack(e.target.value)}
           className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white"
         />
+        <textarea
+  placeholder="Project Description"
+  value={description}
+  onChange={(e) => setDescription(e.target.value)}
+  className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white"
+></textarea>
+          <input
+  type="text"
+  placeholder="GitHub Repository Link"
+  value={github}
+  onChange={(e) => setGithub(e.target.value)}
+  className="mt-4 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white"
+/>
 
         <div className="mt-6 flex gap-3">
 
@@ -171,6 +184,7 @@ function ProjectCard({ title, tech, status, color }) {
           <button className="flex-1 rounded-xl bg-violet-600 py-3 text-white hover:bg-violet-500">
             View
           </button>
+
 
           <button className="flex-1 rounded-xl bg-cyan-500 py-3 text-slate-900 hover:bg-cyan-400">
             GitHub

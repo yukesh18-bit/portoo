@@ -1,11 +1,17 @@
-import { motion } from "framer-motion";
 
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 export default function InputField({
+  
   label,
   type,
   placeholder,
   icon,
+  value,
+  onChange,
 }) {
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="space-y-2">
       <label className="text-sm text-gray-300 font-medium">
@@ -21,11 +27,29 @@ export default function InputField({
         </div>
 
         <input
-          type={type}
+  type={
+         type === "password"
+         ? showPassword
+        ? "text"
+        : "password"
+      : type
+  }
           placeholder={placeholder}
+          value={value}
+          onChange={onChange}
           className="bg-transparent outline-none text-white w-full placeholder:text-gray-500"
         />
+        {type === "password" && (
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="text-gray-400 hover:text-white"
+  >
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
+  </button>
+)}
       </motion.div>
     </div>
+    
   );
 }

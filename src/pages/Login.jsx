@@ -2,7 +2,8 @@ import GradientBackground from "../components/GradientBackground";
 import GlassCard from "../components/GlassCard";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import {
   FaEnvelope,
@@ -11,20 +12,44 @@ import {
 } from "react-icons/fa";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function Login() {
+  const navigate = useNavigate();
+
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+
+const handleLogin = async () => {
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/auth/login",
+      {
+        email,
+        password,
+      }
+    );
+
+    localStorage.setItem("token", res.data.token);
+
+    alert("Login Successful");
+
+    navigate("/dashboard");
+  } catch (err) {
+    alert(err.response?.data?.message || "Login Failed");
+  }
+};
   return (
     <GradientBackground>
 
-      <div className="min-h-screen flex items-center justify-center px-6">
-
+<div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <GlassCard>
 
-          <div className="grid lg:grid-cols-2">
+<div className="grid grid-cols-1 lg:grid-cols-2">
 
             {/* LEFT */}
 
-            <div className="p-14 text-white">
+<div className="p-6 md:p-10 lg:p-14 text-white">
 
               <motion.div
                 initial={{ opacity: 0, y: -20 }}
@@ -37,7 +62,7 @@ export default function Login() {
 
                 </div>
 
-                <h1 className="mt-8 text-6xl font-black leading-tight">
+<h1 className="mt-8 text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
 
                   Acadfolio AI
 
@@ -52,8 +77,8 @@ export default function Login() {
 
               </motion.div>
 
-              <div className="grid grid-cols-2 gap-5 mt-12">
-
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-12">
+  
                 <div className="rounded-2xl bg-white/5 p-5 border border-white/10 hover:border-violet-400 hover:-translate-y-2 hover:bg-white/10 transition-all duration-300 cursor-pointer">
 
                   <h2 className="text-4xl font-bold">
@@ -144,24 +169,49 @@ export default function Login() {
                 <div className="mt-10 space-y-6">
 
                   <InputField
-                    label="Email"
-                    type="email"
-                    placeholder="Enter your email"
-                    icon={<FaEnvelope />}
-                  />
+label="Email"
+type="email"
+placeholder="Enter your email"
+icon={<FaEnvelope />}
+value={email}
+onChange={(e) => setEmail(e.target.value)}
+/>
 
-                  <InputField
-                    label="Password"
-                    type="password"
-                    placeholder="Enter password"
-                    icon={<FaLock />}
-                  />
+                <InputField
+label="Password"
+type="password"
+placeholder="Enter password"
+icon={<FaLock />}
+value={password}
+onChange={(e) => setPassword(e.target.value)}
+/>
 
-                  <PrimaryButton>
+<PrimaryButton onClick={handleLogin}>
+  Sign In
+</PrimaryButton>
 
-                    Sign In
+           <div className="relative my-6">
+  <div className="absolute inset-0 flex items-center">
+    <div className="w-full border-t border-white/10"></div>
+  </div>
 
-                  </PrimaryButton>
+  <div className="relative flex justify-center">
+    <span className="bg-[#0d111f] px-4 text-sm text-gray-400">
+      OR
+    </span>
+  </div>
+</div>
+
+<button
+  className="w-full flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 py-4 text-white hover:bg-white/10 transition"
+>
+  <img
+    src="https://www.svgrepo.com/show/475656/google-color.svg"
+    alt="Google"
+    className="w-6 h-6"
+  />
+  Continue with Google
+</button>
 
                 </div>
 

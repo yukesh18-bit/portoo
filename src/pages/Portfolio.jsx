@@ -2,15 +2,104 @@ import GradientBackground from "../components/GradientBackground";
 import GlassCard from "../components/GlassCard";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
+import { QRCodeCanvas } from "qrcode.react";
 
 export default function Portfolio() {
   const { user } = useContext(UserContext);
+const portfolioLink =
+`${window.location.origin}/portfolio/${
+  user.name?.toLowerCase().replace(/\s+/g, "-")
+}`;
+    const copyLink = () => {
+  navigator.clipboard.writeText(portfolioLink);
+  alert("✅ Portfolio link copied!");
+};
+
+const openPortfolio = () => {
+  window.open(portfolioLink, "_blank");
+};
+
+const downloadQR = () => {
+  const canvas = document.getElementById("portfolioQR");
+
+  const pngUrl = canvas
+    .toDataURL("image/png")
+    .replace("image/png", "image/octet-stream");
+
+  const downloadLink = document.createElement("a");
+
+  downloadLink.href = pngUrl;
+  downloadLink.download = `${user.name || "portfolio"}-QR.png`;
+
+  document.body.appendChild(downloadLink);
+
+  downloadLink.click();
+
+  document.body.removeChild(downloadLink);
+};
 
   return (
     <GradientBackground>
       <div className="min-h-screen p-8 max-w-6xl mx-auto">
 
         {/* Hero Section */}
+        <GlassCard>
+  <div className="mt-8 p-8 text-center">
+
+    <h2 className="text-3xl font-bold text-white">
+      🌍 Share Your Portfolio
+    </h2>
+
+    <p className="mt-3 text-gray-400">
+      Anyone can scan this QR Code to view your portfolio.
+    </p>
+
+    <div className="mt-8 flex justify-center">
+
+      <div className="rounded-2xl bg-white p-6">
+
+       <QRCodeCanvas
+  id="portfolioQR"
+  value={portfolioLink}
+  size={220}
+  includeMargin={true}
+/>
+
+      </div>
+
+    </div>
+
+    <p className="mt-6 text-cyan-400 break-all">
+      {portfolioLink}
+    </p>
+    <div className="mt-8 flex flex-wrap justify-center gap-4">
+
+  <button
+    onClick={copyLink}
+    className="rounded-xl bg-violet-600 px-6 py-3 text-white hover:bg-violet-500"
+  >
+    📋 Copy Link
+  </button>
+
+  <button
+    onClick={openPortfolio}
+    className="rounded-xl bg-cyan-500 px-6 py-3 text-slate-900 hover:bg-cyan-400"
+  >
+    🌐 Open Portfolio
+  </button>
+
+  <button
+    onClick={downloadQR}
+    className="rounded-xl bg-green-500 px-6 py-3 text-white hover:bg-green-400"
+  >
+    ⬇ Download QR
+  </button>
+
+</div>
+
+  </div>
+</GlassCard>
+
         <GlassCard>
           <div className="p-10 text-center">
 
@@ -38,14 +127,27 @@ export default function Portfolio() {
               {user.college || "College Name"}
             </p>
 
-            <div className="mt-8 flex justify-center gap-4">
+            <div className="mt-8 flex justify-center gap-4 flex-wrap">
               <button className="rounded-xl bg-violet-600 px-6 py-3 text-white hover:bg-violet-500">
                 Download Resume
               </button>
 
-              <button className="rounded-xl bg-cyan-500 px-6 py-3 text-slate-900 hover:bg-cyan-400">
-                Contact
-              </button>
+              <a
+  href={user.github || "#"}
+  target="_blank"
+  rel="noreferrer"
+  className="rounded-xl bg-cyan-500 px-6 py-3 text-slate-900 hover:bg-cyan-400"
+>
+  GitHub
+</a>
+   <a
+  href={user.linkedin || "#"}
+  target="_blank"
+  rel="noreferrer"
+  className="rounded-xl bg-blue-600 px-6 py-3 text-white hover:bg-blue-500"
+>
+  LinkedIn
+</a>
             </div>
 
           </div>
@@ -107,7 +209,7 @@ export default function Portfolio() {
             </h2>
 
             <p className="mt-4 text-gray-300 leading-8">
-             {user.about || "No description added yet."}
+             {user.bio || "No description added yet."}
             </p>
 
           </div>
@@ -123,25 +225,20 @@ export default function Portfolio() {
 
             <div className="flex flex-wrap gap-4 mt-6">
 
-              <span className="rounded-full bg-violet-600 px-5 py-2 text-white">
-                Java
-              </span>
-
-              <span className="rounded-full bg-cyan-500 px-5 py-2 text-slate-900">
-                React
-              </span>
-
-              <span className="rounded-full bg-pink-500 px-5 py-2 text-white">
-                AI
-              </span>
-
-              <span className="rounded-full bg-green-500 px-5 py-2 text-white">
-                MySQL
-              </span>
-
-              <span className="rounded-full bg-yellow-500 px-5 py-2 text-black">
-                Tailwind CSS
-              </span>
+              {user.skills ? (
+  user.skills.split(",").map((skill, index) => (
+    <span
+      key={index}
+      className="rounded-full bg-violet-600 px-5 py-2 text-white"
+    >
+      {skill.trim()}
+    </span>
+  ))
+) : (
+  <span className="text-gray-400">
+    No skills added.
+  </span>
+)}
 
             </div>
 

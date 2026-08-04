@@ -19,6 +19,7 @@ export default function GradientBackground({ children }) {
         className="absolute -top-40 -left-40 w-[650px] h-[650px] rounded-full bg-violet-500/30 blur-[140px]"
       />
 
+
       {/* Aurora 2 */}
       <motion.div
         animate={{

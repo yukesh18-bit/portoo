@@ -145,6 +145,66 @@ const { user, setUser } = useContext(UserContext);
     }
     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white"
   />
+  <div className="mt-4">
+  <input
+    type="text"
+    placeholder="GitHub Profile URL"
+    value={user.github}
+    onChange={(e) =>
+      setUser({
+        ...user,
+        github: e.target.value,
+      })
+    }
+    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white"
+  />
+</div>
+
+<div className="mt-4">
+  <input
+    type="text"
+    placeholder="LinkedIn Profile URL"
+    value={user.linkedin}
+    onChange={(e) =>
+      setUser({
+        ...user,
+        linkedin: e.target.value,
+      })
+    }
+    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white"
+  />
+</div>
+
+<div className="mt-4">
+  <input
+    type="text"
+    placeholder="Skills (React, Java, MERN)"
+    value={user.skills}
+    onChange={(e) =>
+      setUser({
+        ...user,
+        skills: e.target.value,
+      })
+    }
+    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white"
+  />
+</div>
+
+<div className="mt-4">
+  <textarea
+    rows="4"
+    placeholder="Write about yourself..."
+    value={user.bio}
+    onChange={(e) =>
+      setUser({
+        ...user,
+        bio: e.target.value,
+      })
+    }
+    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white"
+  />
+</div>
+
   <button
   onClick={() => alert("✅ Profile Updated Successfully")}
   className="mt-6 w-full rounded-xl bg-gradient-to-r from-violet-600 to-cyan-500 py-3 font-bold text-white transition hover:scale-105"

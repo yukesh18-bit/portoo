@@ -2,8 +2,7 @@ import GradientBackground from "../components/GradientBackground";
 import GlassCard from "../components/GlassCard";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaUser,
   FaUniversity,
@@ -14,8 +13,40 @@ import {
 } from "react-icons/fa";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
+import axios from "axios";
 
 export default function Register() {
+  const navigate = useNavigate();
+
+const [name, setName] = useState("");
+const [college, setCollege] = useState("");
+const [department, setDepartment] = useState("");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [confirmPassword, setConfirmPassword] = useState("");
+
+const handleRegister = async () => {
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  try {
+    await axios.post("http://localhost:5000/api/auth/register", {
+      name,
+      college,
+      department,
+      email,
+      password,
+    });
+
+    alert("Registration Successful");
+    navigate("/login");
+  } catch (err) {
+    alert(err.response?.data?.message || "Registration Failed");
+  }
+};
   return (
     <GradientBackground>
       <div className="min-h-screen flex items-center justify-center px-6 py-10">
@@ -98,55 +129,90 @@ export default function Register() {
               <div className="mt-10 space-y-5">
 
                 <InputField
-                  label="Full Name"
-                  type="text"
-                  placeholder="Enter your name"
-                  icon={<FaUser />}
-                />
+  label="Full Name"
+  type="text"
+  placeholder="Enter your name"
+  icon={<FaUser />}
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+/>
+
+ <InputField
+  label="College"
+  type="text"
+  placeholder="College Name"
+  icon={<FaUniversity />}
+  value={college}
+  onChange={(e) => setCollege(e.target.value)}
+/>
+                <InputField
+  label="Department"
+  type="text"
+  placeholder="Department"
+  icon={<FaBook />}
+  value={department}
+  onChange={(e) => setDepartment(e.target.value)}
+/>
+
+               <InputField
+  label="Email"
+  type="email"
+  placeholder="Enter email"
+  icon={<FaEnvelope />}
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+/>
 
                 <InputField
-                  label="College"
-                  type="text"
-                  placeholder="College name"
-                  icon={<FaUniversity />}
-                />
-
-                <InputField
-                  label="Department"
-                  type="text"
-                  placeholder="Department"
-                  icon={<FaBook />}
-                />
-
-                <InputField
-                  label="Email"
-                  type="email"
-                  placeholder="Enter email"
-                  icon={<FaEnvelope />}
-                />
-
-                <InputField
-                  label="Password"
-                  type="password"
-                  placeholder="Create password"
-                  icon={<FaLock />}
-                />
+  label="Password"
+  type="password"
+  placeholder="Create password"
+  icon={<FaLock />}
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+/>
 
                 <InputField
                   label="Confirm Password"
                   type="password"
                   placeholder="Confirm password"
                   icon={<FaLock />}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
 
-                <PrimaryButton>
+                <PrimaryButton onClick={handleRegister}>
                   Create Portfolio
                 </PrimaryButton>
+
+                <div className="relative my-6">
+  <div className="absolute inset-0 flex items-center">
+    <div className="w-full border-t border-white/10"></div>
+  </div>
+
+  <div className="relative flex justify-center">
+    <span className="bg-[#0d111f] px-4 text-sm text-gray-400">
+      OR
+    </span>
+  </div>
+</div>
+
+<button
+  onClick={() => alert("Google Sign Up Coming Soon")}
+  className="w-full flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 py-4 text-white hover:bg-white/10 transition"
+>
+  <img
+    src="https://www.svgrepo.com/show/475656/google-color.svg"
+    alt="Google"
+    className="w-6 h-6"
+  />
+  Continue with Google
+</button>
 
                 <div className="text-center text-gray-400 mt-4">
                   Already have an account?
                    <Link
-                      to="/"
+                      to="/login"
                       className="text-violet-400 ml-2 hover:underline"
                    >
                         Sign In
